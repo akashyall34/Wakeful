@@ -61,7 +61,6 @@ The popup shows active status, session uptime, and wake lock confirmation.
 | Permission | Why |
 |---|---|
 | `tabs` | Detect when you're on a Colab tab |
-| `scripting` | Inject the keep-alive script |
 | `storage` | Remember your on/off preference |
 
 No Google account access. No network requests. No data collection.
@@ -75,7 +74,7 @@ No Google account access. No network requests. No data collection.
 | Colab Alive | 2021 | V2 | ❌ Broken |
 | Colab Auto Reconnect | 2020 | V2 | ❌ Removed from store |
 | Google Colab Keep-Alive | 2023 | V2 | ⚠️ Inconsistent |
-| **Wakeful** | **2025** | **V3** | **✅** |
+| **Wakeful** | **2026** | **V3** | **✅** |
 
 ---
 
