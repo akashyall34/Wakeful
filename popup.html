@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wakeful</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap');
+
+    :root {
+      --bg:       #0d0f0e;
+      --surface:  #141716;
+      --border:   #1e2320;
+      --green:    #00e676;
+      --green-dim:#00c853;
+      --green-glow: rgba(0, 230, 118, 0.15);
+      --muted:    #4a5240;
+      --text:     #c8d4c0;
+      --text-dim: #6b7a62;
+      --red:      #ff5252;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 300px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--green);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .logo-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--green);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* ── Toggle ── */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toggle-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 99px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: 1px solid #2a2e28;
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 2px;
+      top: 2px;
+      background: var(--muted);
+      border-radius: 50%;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    input:checked + .slider {
+      background: var(--green-glow);
+      border-color: var(--green-dim);
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(18px);
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green-dim);
+    }
+
+    /* ── Status card ── */
+    #main {
+      transition: opacity 0.2s;
+    }
+
+    .status-card {
+      margin: 14px 16px;
+      padding: 12px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .dot.active {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green-dim);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 4px var(--green-dim); }
+      50%       { box-shadow: 0 0 10px var(--green); }
+    }
+
+    #status-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── Stats ── */
+    .stats {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2px;
+    }
+
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.3px;
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    /* ── No Colab warning ── */
+    #no-colab {
+      display: none;
+      margin: 0 16px 12px;
+      padding: 9px 12px;
+      background: rgba(255, 82, 82, 0.06);
+      border: 1px solid rgba(255, 82, 82, 0.2);
+      border-radius: 6px;
+    }
+
+    #no-colab p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #ff7070;
+      line-height: 1.5;
+    }
+
+    #open-colab {
+      margin-top: 5px;
+      background: none;
+      border: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--green);
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    #open-colab:hover {
+      opacity: 0.8;
+    }
+
+    /* ── How it works ── */
+    .how-it-works {
+      margin: 0 16px 14px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .how-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .how-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .how-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+    }
+
+    .how-bullet {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--green-dim);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .how-text {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 8px 18px 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+    }
+
+    .footer-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--green-dim);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+
+    .footer-link:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 1L9.5 5H11.5L7 13L2.5 5H4.5L7 1Z" fill="#0d0f0e"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-name">Wakeful</div>
+        <div class="logo-tag">MV3 · Open Source</div>
+      </div>
+    </div>
+
+    <div class="toggle-wrap">
+      <label class="toggle">
+        <input type="checkbox" id="toggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- No Colab tab warning -->
+  <div id="no-colab">
+    <p>No Colab tab detected.<br>Open a notebook first.</p>
+    <button id="open-colab">Open Google Colab →</button>
+  </div>
+
+  <!-- Main content -->
+  <div id="main">
+
+    <!-- Status -->
+    <div class="status-card">
+      <div class="status-row">
+        <div class="status-left">
+          <div class="dot" id="status-dot"></div>
+          <span id="status-text">Inactive</span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="divider"></div>
+
+        <div class="stat-row" id="uptime-row" style="display:none">
+          <span class="stat-label">SESSION TIME</span>
+          <span class="stat-value" id="uptime-value">0s</span>
+        </div>
+
+        <div class="stat-row" id="wakelock-row" style="display:none">
+          <span class="stat-label">WAKE LOCK</span>
+          <span class="stat-value" id="wakelock-value">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="how-it-works">
+      <div class="how-title">How it works</div>
+      <div class="how-list">
+        <div class="how-item">
+          <span class="how-bullet">▸</span>
+          <span class="how-text">Screen Wake Lock API prevents your Mac from sleeping</span>
+        </div>
+        <div class="how-item">
+          <span class="how-bullet">▸</span>
+          <span class="how-text">Simulates activity every 30s to beat Colab's inactivity timeout</span>
+        </div>
+        <div class="how-item">
+          <span class="how-bullet">▸</span>
+          <span class="how-text">Auto-clicks Reconnect if the session drops</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-text">v1.0.0</span>
+    <a class="footer-link" href="https://github.com/yourusername/wakeful" target="_blank">github ↗</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
