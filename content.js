@@ -20,6 +20,9 @@ async function requestWakeLock() {
     console.warn('[Wakeful] Wake Lock API not supported in this browser.');
     return false;
   }
+  if (document.visibilityState !== 'visible') {
+    return false; // visibilitychange listener will acquire when tab becomes active
+  }
   try {
     wakeLock = await navigator.wakeLock.request('screen');
     wakeLock.addEventListener('release', () => {
