@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "Wakeful",
+  "version": "1.0.0",
+  "description": "Keeps your Google Colab sessions alive. Prevents system sleep and tab disconnection during long training runs.",
+  "author": "Akash Yallamati",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    },
+    "default_title": "Wakeful"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://colab.research.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://colab.research.google.com/*"
+  ]
+}

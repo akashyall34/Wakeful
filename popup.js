@@ -53,18 +53,6 @@ function setUI(enabled, wakeLockActive) {
   }
 }
 
-// ── Query active Colab tab for status ─────────────────────────────────────────
-
-async function queryColabTab() {
-  const tabs = await chrome.tabs.query({ url: 'https://colab.research.google.com/*', active: true, currentWindow: true });
-  if (tabs.length === 0) {
-    // Try any Colab tab
-    const allTabs = await chrome.tabs.query({ url: 'https://colab.research.google.com/*' });
-    return allTabs[0] || null;
-  }
-  return tabs[0];
-}
-
 async function getColabStatus(tabId) {
   try {
     return await chrome.tabs.sendMessage(tabId, { type: 'GET_STATUS' });
@@ -89,6 +77,8 @@ async function init() {
     noColabMsg.style.display = 'block';
     mainContent.style.opacity = '0.4';
     mainContent.style.pointerEvents = 'none';
+    // Only block turning ON — always allow turning OFF
+    if (!enabled) document.getElementById('toggle').disabled = true;
   }
 
   let wakeLockActive = false;
@@ -112,6 +102,15 @@ async function init() {
 
 document.getElementById('toggle').addEventListener('change', async (e) => {
   const enabled = e.target.checked;
+
+  // Block turning ON if no Colab tab is open
+  if (enabled) {
+    const colabTabs = await chrome.tabs.query({ url: 'https://colab.research.google.com/*' });
+    if (colabTabs.length === 0) {
+      e.target.checked = false;
+      return;
+    }
+  }
 
   const { enabled: newState } = await chrome.runtime.sendMessage({
     type: 'TOGGLE'

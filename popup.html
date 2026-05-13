@@ -5,7 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wakeful</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap');
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400 500;
+      font-display: swap;
+      src: url('fonts/inter-latin.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      font-style: normal;
+      font-weight: 400 600;
+      font-display: swap;
+      src: url('fonts/jetbrains-mono-latin.woff2') format('woff2');
+    }
 
     :root {
       --bg:       #0d0f0e;
@@ -119,6 +132,12 @@
       cursor: pointer;
       transition: background 0.2s;
       border: 1px solid #2a2e28;
+    }
+
+    input:disabled + .slider {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
     .slider::before {
@@ -402,7 +421,7 @@
       <div class="how-list">
         <div class="how-item">
           <span class="how-bullet">▸</span>
-          <span class="how-text">Screen Wake Lock API prevents your Mac from sleeping</span>
+          <span class="how-text">Screen Wake Lock API prevents your computer from sleeping</span>
         </div>
         <div class="how-item">
           <span class="how-bullet">▸</span>
@@ -420,7 +439,7 @@
   <!-- Footer -->
   <div class="footer">
     <span class="footer-text">v1.0.0</span>
-    <a class="footer-link" href="https://github.com/yourusername/wakeful" target="_blank">github ↗</a>
+    <a class="footer-link" href="https://github.com/akashyall34/Wakeful" target="_blank">github ↗</a>
   </div>
 
   <script src="popup.js"></script>
