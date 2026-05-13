@@ -1,8 +1,10 @@
 # Wakeful
 
-**Keep your Google Colab sessions alive during long training runs.**
+**Keeps your Google Colab™ sessions alive during long training runs.**
 
-A clean, open-source Chrome extension built on Manifest V3. No sketchy permissions, no closed-source binaries but just a few hundred lines of JavaScript you can read yourself.
+![Chrome](https://img.shields.io/badge/Chrome-MV3-4285F4?logo=googlechrome&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
 
 <img width="300" height="200" alt="Wakeful_Image1" src="https://github.com/user-attachments/assets/896b0c1c-7ab9-4042-b03d-9dabd269ba30" />
 <img width="300" height="200" alt="Wakeful_Image2" src="https://github.com/user-attachments/assets/a1462462-960b-4cda-8db1-b0cf67c8641d" />
@@ -10,54 +12,47 @@ A clean, open-source Chrome extension built on Manifest V3. No sketchy permissio
 
 ---
 
-## The Problem
+## The Story
 
-You kick off a 7-hour training job on Colab. You go to sleep and with no mouse input, your computer goes to sleep. Session dies. You wake up to nothing hoping that you have your training all done.
+I spent $33 on a physical mouse jiggler because my Colab sessions kept dying overnight. Every existing Chrome extension fix was broken — all built in 2020–2021 on Manifest V2, which Chrome is phasing out.
 
-Existing extensions (Colab Alive, Colab Auto Reconnect) were all built in 2020–2021 on Manifest V2, which Chrome is phasing out. Wakeful is the most up to date with aesthetically pleasing UI.
+So I built Wakeful. It uses the browser's native Screen Wake Lock API — no hardware, no hacks, no $33.
 
 ---
 
 ## How It Works
 
-Wakeful solves two separate problems:
-
 **1. Prevents your computer from sleeping**
-Uses the browser's native [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) — a modern web standard that tells the OS not to sleep. No system hacks, no native code needed.
+Uses the [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) — a modern web standard that tells your OS not to sleep while a Colab tab is active. No native code, no system hacks.
 
 **2. Prevents Colab's inactivity timeout**
-Simulates subtle activity (mouse events) every 30 seconds inside your Colab tab so Colab's idle detector doesn't trigger.
+Simulates subtle mouse activity every 30 seconds inside your Colab tab so Colab's idle detector never triggers.
 
 **3. Auto-reconnects if the session drops**
 Checks every 20 seconds for Colab's reconnect button and clicks it automatically.
 
 ---
 
-## Install (Developer Mode)
+## Install
 
-Until this is on the Chrome Web Store:
+### Chrome Web Store *(coming soon)*
 
-1. Download or clone this repo
-2. Open Chrome → `chrome://extensions`
-3. Enable **Developer mode** (top right toggle)
-4. Click **Load unpacked**
-5. Select the `wakeful` folder
-
-That's it. The extension icon appears in your toolbar.
+### Developer Mode (available now)
+1. Clone or download this repo
+2. Go to `chrome://extensions`
+3. Enable **Developer mode** (top right)
+4. Click **Load unpacked** → select the `Wakeful` folder
 
 ---
 
 ## Usage
 
-1. Open your Google Colab notebook
+1. Open a Google Colab™ notebook
 2. Click the Wakeful icon in your toolbar
-3. Toggle it **ON**
-4. Start your training run — walk away
+3. Toggle **ON**
+4. Start your training run and walk away
 
-The popup shows:
-- Active/Inactive status
-- Session uptime
-- Whether Wake Lock was successfully acquired
+The popup shows active status, session uptime, and wake lock confirmation.
 
 ---
 
@@ -66,11 +61,21 @@ The popup shows:
 | Permission | Why |
 |---|---|
 | `tabs` | Detect when you're on a Colab tab |
-| `scripting` | Inject the keep-alive script into your Colab tab |
-| `storage` | Remember your on/off preference across sessions |
-| `alarms` | (Reserved for future scheduled checks) |
+| `scripting` | Inject the keep-alive script |
+| `storage` | Remember your on/off preference |
 
-No access to your Google account. No network requests. No data collection.
+No Google account access. No network requests. No data collection.
+
+---
+
+## Why not the existing extensions?
+
+| Extension | Last updated | Manifest | Works? |
+|---|---|---|---|
+| Colab Alive | 2021 | V2 | ❌ Broken |
+| Colab Auto Reconnect | 2020 | V2 | ❌ Removed from store |
+| Google Colab Keep-Alive | 2023 | V2 | ⚠️ Inconsistent |
+| **Wakeful** | **2025** | **V3** | **✅** |
 
 ---
 
@@ -80,16 +85,7 @@ No access to your Google account. No network requests. No data collection.
 |---|---|---|
 | Chrome 92+ | ✅ | ✅ |
 | Edge 92+ | ✅ | ✅ |
-| Firefox | ❌ (API not supported) | ✅ |
-| Safari | ❌ | ✅ |
-
-Chrome is recommended for full functionality.
-
----
-
-## Contributing
-
-PRs welcome. Keep it simple — this tool should stay small and auditable.
+| Firefox | ❌ | ✅ |
 
 ---
 
