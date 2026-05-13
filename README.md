@@ -4,6 +4,10 @@
 
 A clean, open-source Chrome extension built on Manifest V3. No sketchy permissions, no closed-source binaries but just a few hundred lines of JavaScript you can read yourself.
 
+<img width="300" height="200" alt="Wakeful_Image1" src="https://github.com/user-attachments/assets/896b0c1c-7ab9-4042-b03d-9dabd269ba30" />
+<img width="300" height="200" alt="Wakeful_Image2" src="https://github.com/user-attachments/assets/a1462462-960b-4cda-8db1-b0cf67c8641d" />
+<img width="300" height="200" alt="Wakeful_Image3" src="https://github.com/user-attachments/assets/a682a6f8-c896-4388-ae29-094e6c1be0a7" />
+
 ---
 
 ## The Problem
